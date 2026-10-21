@@ -6,7 +6,6 @@
 <title>شركة نايف للأغذية | تقرير الأصناف المطلوبة</title>
 <link rel="icon" href="https://i.postimg.cc/NM2zJWZD/NAIF-LOGO.jpg" type="image/jpeg">
 
-<!-- xlsx-js-style: قراءة وكتابة Excel مع دعم تنسيق الخلايا (حدود رفيعة) -->
 <script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
@@ -34,7 +33,7 @@
   .card{background:#fff;border-radius:14px;padding:14px;margin-bottom:14px;
         box-shadow:0 2px 16px rgba(20,30,60,.07);border:1px solid #eef1f6}
 
-  /* ============ Upload bar (compact) ============ */
+  /* ============ Upload bar ============ */
   .upload-bar{display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:12px 14px}
   .upload-bar .file-name{font-size:.82rem;color:#6b7488;font-weight:600}
   .upload-bar .status{flex:1 1 100%;margin:0}
@@ -63,6 +62,8 @@
   .btn-green:hover:not(:disabled){background:#155427;transform:translateY(-1px)}
   .btn-ghost{background:#eef1f6;color:#39415a}
   .btn-ghost:hover:not(:disabled){background:#e2e7f0}
+  .btn-transpose{background:#0d47a1;color:#fff;box-shadow:0 4px 14px rgba(13,71,161,.25)}
+  .btn-transpose:hover:not(:disabled){background:#0a3880;transform:translateY(-1px)}
 
   /* ============ Report header ============ */
   .report-head{
@@ -119,6 +120,20 @@
   table.report td.total-col,
   table.report th.total-col{background:#fdf1f1!important;font-weight:800;color:#8e1c1c}
 
+  /* ===== Transposed mode overrides ===== */
+  table.report.transposed thead th.item,
+  table.report.transposed tbody td.item{
+    min-width:160px;max-width:160px;width:160px;
+  }
+  table.report.transposed thead th:not(.idx):not(.item){
+    min-width:52px;max-width:78px;font-size:10px;
+  }
+  table.report tbody tr.total-row td{
+    background:#fdf1f1 !important;font-weight:800;color:#8e1c1c;
+    border-top:2px solid #c62828;
+  }
+  table.report tbody tr.total-row td.item{color:#8e1c1c;background:#fdf1f1!important}
+
   details.notes{margin-top:14px;font-size:.8rem;color:#556}
   details.notes summary{cursor:pointer;font-weight:700;color:#c62828}
   details.notes .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
@@ -128,20 +143,12 @@
   /* ============ Signature (screen only, smaller 25%, red border, blue text) ============ */
   .signature-card{
     position:fixed;bottom:20px;left:20px;
-    background:#ffffff;
-    color:#0d47a1;
-    padding:7.88px 13.13px;
-    border-radius:6.38px;
-    border:2px solid #c62828;
+    background:#ffffff;color:#0d47a1;
+    padding:7.88px 13.13px;border-radius:6.38px;border:2px solid #c62828;
     box-shadow:none;
     font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
-    font-size:0.60rem;
-    font-weight:600;
-    z-index:1000;
-    transition:all .3s ease;
-    cursor:pointer;
-    text-decoration:none;
-    display:inline-block;
+    font-size:0.60rem;font-weight:600;z-index:1000;
+    transition:all .3s ease;cursor:pointer;text-decoration:none;display:inline-block;
   }
   .signature-card:hover{transform:scale(1.05)}
   .signature-card .name{font-size:0.7125rem;font-weight:700;margin-bottom:3.75px;color:#0d47a1}
@@ -160,7 +167,7 @@
     .table-wrap{max-height:none;overflow:visible;border:0}
     table.report{font-size:7px}
     table.report thead th{background:#c62828!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-    table.report td.total-col{background:#fdf1f1!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    table.report td.total-col,table.report tbody tr.total-row td{background:#fdf1f1!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
   }
 </style>
 </head>
@@ -177,7 +184,7 @@
 
 <div class="app">
 
-  <!-- ================= UPLOAD (compact button only) ================= -->
+  <!-- ================= UPLOAD ================= -->
   <section class="card upload-bar no-print">
     <button class="btn btn-primary" id="btnUpload">📂 تحميل ملف Excel</button>
     <input type="file" id="fileInput" accept=".xlsx,.xls,.csv" hidden>
@@ -190,6 +197,7 @@
     <label class="ctl"><input type="checkbox" id="optAllSites"> إظهار كل المطاعم</label>
     <label class="ctl"><input type="checkbox" id="optHideEmpty"> إخفاء الأصناف الفارغة</label>
     <div class="spacer"></div>
+    <button class="btn btn-transpose" id="btnTranspose" title="تبديل بين عرض المطاعم كصفوف أو كأعمدة">🔄 قلب الجدول</button>
     <button class="btn btn-green" id="btnXlsx">📥 تحميل Excel</button>
     <button class="btn btn-outline" id="btnPrint">🖨️ طباعة</button>
     <button class="btn btn-primary" id="btnPdf">📄 تصدير PDF</button>
@@ -200,8 +208,8 @@
     <div class="report-head">
       <img src="https://i.postimg.cc/NM2zJWZD/NAIF-LOGO.jpg" alt="logo">
       <div class="rh-title">
-        <h2>تقرير كميات الأصناف المطلوبة حسب الموقع</h2>
-        <p>Required Items Quantities by Site — Naif Food Company</p>
+        <h2 id="rhTitle">تقرير كميات الأصناف المطلوبة حسب الموقع</h2>
+        <p id="rhSub">Required Items Quantities by Site — Naif Food Company</p>
       </div>
       <div class="rh-meta" id="reportMeta"></div>
     </div>
@@ -239,54 +247,20 @@ const COMPANY_EN = 'Naif Food Company';
 const DEV_NAME   = 'Yasser Elkhateeb';
 const DEV_PHONE  = '67011143';
 
-/* الأصناف المطلوبة — من ملف: الأصناف المطلوبه.xlsx */
 const ITEMS = [
-  "Cheesy Fries",
-  "Chick Fries",
-  "COLE SLAW Large _Z",
-  "COLE SLAW Small _Z",
-  "Fattoush _Z",
-  "Hummus _Z",
-  "Large Barbecue Sauce",
-  "Large Cheddar Sauce",
-  "Large Chilli Mayo Sauce",
-  "large dynamite garlic",
-  "Large Honey Mustard",
-  "Large Maboug Sauce",
-  "Large Mayo Ketchup",
-  "Large Mayonnaise Sauce",
-  "Large Peri Peri Sauce",
-  "Large Ranch Sauce",
-  "Large Spicy Cheese sauce",
-  "large sweet spicy sauce",
-  "mutabbal",
-  "ONION RINGS _Z",
-  "ONION RINGS FAMILY_Z",
-  "Puri Bread_Z",
-  "Rocca Salad _Z",
-  "Tabbouleh _Z",
-  "XLarge Barbecue Sauce",
-  "xlarge cheddar sauce",
-  "XLarge Chilli Mayo Sauce",
-  "XLarge Honey Mustard",
-  "xlarge maboug sauce",
-  "xlarge mayo ketchup",
-  "xlarge mayonnaise sauce",
-  "XLarge Peri Peri Sauce",
-  "xlarge pink sauce",
-  "xlarge ranch sauce",
-  "xlarge spicy cheese sauce",
-  "xlarge sweet spicy sauce",
-  "Large French Garlic",
-  "XLarge French Garlic",
-  "Protein Salad - Z",
-  "Large Pink Sauce",
-  "XLarge Pink Sauce",
-  "RICE W MILK_Z",
-  "Sweet Corn"
+  "Cheesy Fries","Chick Fries","COLE SLAW Large _Z","COLE SLAW Small _Z","Fattoush _Z",
+  "Hummus _Z","Large Barbecue Sauce","Large Cheddar Sauce","Large Chilli Mayo Sauce",
+  "large dynamite garlic","Large Honey Mustard","Large Maboug Sauce","Large Mayo Ketchup",
+  "Large Mayonnaise Sauce","Large Peri Peri Sauce","Large Ranch Sauce","Large Spicy Cheese sauce",
+  "large sweet spicy sauce","mutabbal","ONION RINGS _Z","ONION RINGS FAMILY_Z","Puri Bread_Z",
+  "Rocca Salad _Z","Tabbouleh _Z","XLarge Barbecue Sauce","xlarge cheddar sauce",
+  "XLarge Chilli Mayo Sauce","XLarge Honey Mustard","xlarge maboug sauce","xlarge mayo ketchup",
+  "xlarge mayonnaise sauce","XLarge Peri Peri Sauce","xlarge pink sauce","xlarge ranch sauce",
+  "xlarge spicy cheese sauce","xlarge sweet spicy sauce","Large French Garlic",
+  "XLarge French Garlic","Protein Salad - Z","Large Pink Sauce","XLarge Pink Sauce",
+  "RICE W MILK_Z","Sweet Corn"
 ];
 
-/* المطاعم / الأفرع — من ملف: المطاعم.xlsx */
 const SITES = [
   "360 Mall","Abu Fatira Co-Op","Abu Halifa","Ahmadi Ind","Airport","Al Rai","AlKout",
   "Avenues","Dabaya","Dasma","Fahaheel","Faiha","Farwaniya","Fintas","Hadiya",
@@ -352,7 +326,7 @@ function resolveSiteName(raw){
 }
 
 /* =========================================================================
-   3) PARSING  (Product Mix by Site Subgroups)
+   3) PARSING
    ========================================================================= */
 function isNoiseRow(a){
   const l = a.toLowerCase();
@@ -454,7 +428,7 @@ function addToSite(acc, site, item, qty){
 }
 
 /* =========================================================================
-   4) BUILD REPORT MATRIX
+   4) BUILD REPORT
    ========================================================================= */
 function buildReport(parsed, opts){
   const siteData = new Map();
@@ -500,7 +474,11 @@ function buildReport(parsed, opts){
 /* =========================================================================
    5) RENDER
    ========================================================================= */
-const state = { parsed: null, report: null, opts: { allSites: false, hideEmpty: false } };
+const state = {
+  parsed: null,
+  report: null,
+  opts: { allSites: false, hideEmpty: false, transpose: false }
+};
 
 function setStatus(msg, type){
   const el = document.getElementById('status');
@@ -512,9 +490,18 @@ function render(){
   if (!state.parsed) return;
   const R = buildReport(state.parsed, state.opts);
   state.report = R;
+  const T = state.opts.transpose;
 
   document.getElementById('controls').hidden = false;
   document.getElementById('reportCard').hidden = false;
+
+  /* --- Titles --- */
+  document.getElementById('rhTitle').textContent = T
+    ? 'تقرير كميات المطاعم حسب الصنف'
+    : 'تقرير كميات الأصناف المطلوبة حسب الموقع';
+  document.getElementById('rhSub').textContent = T
+    ? 'Sites as Rows — Items as Columns'
+    : 'Required Items Quantities by Site';
 
   /* --- Meta --- */
   const meta = document.getElementById('reportMeta');
@@ -529,22 +516,50 @@ function render(){
     `<div class="stat">عدد الأصناف<b>${R.rows.length}</b></div>` +
     `<div class="stat">إجمالي الكميات<b>${fmtNum(R.grandTotal) || '0'}</b></div>`;
 
-  /* --- Table head --- */
-  let th = `<th class="idx">#</th><th class="item">Item</th>`;
-  R.sites.forEach(s => { th += `<th>${esc(s)}</th>`; });
-  th += `<th class="total-col">Total</th>`;
-  document.getElementById('theadRow').innerHTML = th;
+  /* --- Table class for transposed overrides --- */
+  const tbl = document.getElementById('reportTable');
+  tbl.classList.toggle('transposed', T);
 
-  /* --- Table body: empty cells for zero (no "0" printed) --- */
-  let tb = '';
-  R.rows.forEach((r, i) => {
-    tb += `<tr><td class="idx">${i + 1}</td><td class="item">${esc(r.name)}</td>`;
-    r.values.forEach(v => {
-      tb += `<td class="num${v ? '' : ' zero'}">${v ? fmtNum(v) : ''}</td>`;
+  /* --- Table head + body --- */
+  if (!T){
+    /* ==== Normal mode: rows = items, cols = sites + Total ==== */
+    let th = `<th class="idx">#</th><th class="item">Item</th>`;
+    R.sites.forEach(s => { th += `<th>${esc(s)}</th>`; });
+    th += `<th class="total-col">Total</th>`;
+    document.getElementById('theadRow').innerHTML = th;
+
+    let tb = '';
+    R.rows.forEach((r, i) => {
+      tb += `<tr><td class="idx">${i + 1}</td><td class="item">${esc(r.name)}</td>`;
+      r.values.forEach(v => {
+        tb += `<td class="num${v ? '' : ' zero'}">${v ? fmtNum(v) : ''}</td>`;
+      });
+      tb += `<td class="num total-col">${r.total ? fmtNum(r.total) : ''}</td></tr>`;
     });
-    tb += `<td class="num total-col">${r.total ? fmtNum(r.total) : ''}</td></tr>`;
-  });
-  document.getElementById('tbodyReport').innerHTML = tb;
+    document.getElementById('tbodyReport').innerHTML = tb;
+  } else {
+    /* ==== Transposed mode: rows = sites, cols = items, Total row at bottom ==== */
+    let th = `<th class="idx">#</th><th class="item">Site</th>`;
+    R.rows.forEach(r => { th += `<th>${esc(r.name)}</th>`; });
+    document.getElementById('theadRow').innerHTML = th;
+
+    let tb = '';
+    R.sites.forEach((s, si) => {
+      tb += `<tr><td class="idx">${si + 1}</td><td class="item">${esc(s)}</td>`;
+      R.rows.forEach(r => {
+        const v = r.values[si];
+        tb += `<td class="num${v ? '' : ' zero'}">${v ? fmtNum(v) : ''}</td>`;
+      });
+      tb += `</tr>`;
+    });
+    /* Total row — per item (at bottom of each item column) */
+    tb += `<tr class="total-row"><td class="idx"></td><td class="item">TOTAL</td>`;
+    R.rows.forEach(r => {
+      tb += `<td class="num">${r.total ? fmtNum(r.total) : ''}</td>`;
+    });
+    tb += `</tr>`;
+    document.getElementById('tbodyReport').innerHTML = tb;
+  }
 
   /* --- Notes --- */
   const notes = document.getElementById('notesBox');
@@ -556,7 +571,7 @@ function render(){
     notes.hidden = true;
   }
 
-  setStatus(`تم التحليل بنجاح — ${R.sites.length} مطعم × ${R.rows.length} صنف.`, 'ok');
+  setStatus(`تم التحليل بنجاح — ${R.sites.length} مطعم × ${R.rows.length} صنف ${T ? '(معروض مُقلوب)' : ''}.`, 'ok');
 }
 
 /* =========================================================================
@@ -594,7 +609,7 @@ async function handleFile(file){
       return;
     }
     if (!acc.sites.size){
-      setStatus('تم العثور على الترويسة لكن لم يتم استخراج أي بيانات. تحقق من بنية الملف.', 'error');
+      setStatus('تم العثور على الترويسة لكن لم يتم استخراج أي بيانات.', 'error');
       return;
     }
 
@@ -609,62 +624,88 @@ async function handleFile(file){
 }
 
 /* =========================================================================
-   7) XLSX EXPORT  (thin grid borders + header fill)
+   7) XLSX EXPORT  (handles both orientations)
    ========================================================================= */
 function exportXLSX(){
   if (!state.report){ alert('يرجى رفع ملف البيانات أولاً.'); return; }
   const R = state.report;
+  const T = state.opts.transpose;
 
-  /* مصفوفة البيانات — خلايا صفرية تُترك فارغة */
-  const aoa = [
-    ['#', 'Item', ...R.sites, 'Total'],
-    ...R.rows.map((r, i) => [
-      i + 1,
-      r.name,
-      ...r.values.map(v => v ? +fmtNum(v) : ''),
-      r.total ? +fmtNum(r.total) : ''
-    ])
-  ];
+  let aoa, numCols, isTotalCell;
+
+  if (!T){
+    /* rows = items, cols = sites + Total column */
+    aoa = [
+      ['#', 'Item', ...R.sites, 'Total'],
+      ...R.rows.map((r, i) => [
+        i + 1,
+        r.name,
+        ...r.values.map(v => v ? +fmtNum(v) : ''),
+        r.total ? +fmtNum(r.total) : ''
+      ])
+    ];
+    numCols = 2 + R.sites.length + 1;
+    isTotalCell = (r, c) => c === numCols - 1;
+  } else {
+    /* rows = sites, cols = items, Total row at bottom */
+    aoa = [
+      ['#', 'Site', ...R.rows.map(r => r.name)],
+      ...R.sites.map((s, si) => [
+        si + 1,
+        s,
+        ...R.rows.map(r => r.values[si] ? +fmtNum(r.values[si]) : '')
+      ]),
+      ['', 'TOTAL', ...R.rows.map(r => r.total ? +fmtNum(r.total) : '')]
+    ];
+    numCols = 2 + R.rows.length;
+    isTotalCell = (r, c) => r === aoa.length - 1;
+  }
 
   const ws = XLSX.utils.aoa_to_sheet(aoa);
 
-  /* عرض الأعمدة */
-  ws['!cols'] = [
-    { wch: 5 },
-    { wch: 32 },
-    ...R.sites.map(() => ({ wch: 12 })),
-    { wch: 10 }
-  ];
+  /* Column widths */
+  if (!T){
+    ws['!cols'] = [
+      { wch: 5 },
+      { wch: 32 },
+      ...R.sites.map(() => ({ wch: 12 })),
+      { wch: 10 }
+    ];
+  } else {
+    ws['!cols'] = [
+      { wch: 5 },
+      { wch: 26 },
+      ...R.rows.map(() => ({ wch: 11 }))
+    ];
+  }
 
-  /* حدود رفيعة لكل الخلايا */
+  /* Thin borders everywhere */
   const thin = { style: 'thin', color: { rgb: 'C0C0C0' } };
   const border = { top: thin, bottom: thin, left: thin, right: thin };
 
   const range = XLSX.utils.decode_range(ws['!ref']);
-  const lastCol = range.e.c;
 
   for (let r = range.s.r; r <= range.e.r; r++){
     for (let c = range.s.c; c <= range.e.c; c++){
       const addr = XLSX.utils.encode_cell({ r, c });
       if (!ws[addr]) ws[addr] = { t: 's', v: '' };
 
-      const isHeader = r === 0;
-      const isTotalCol = c === lastCol;
-      const isItemCol = c === 1;
-      const isIdxCol = c === 0;
+      const isHeader   = r === 0;
+      const isTotal    = isTotalCell(r, c);
+      const isItemCol  = c === 1;
 
       ws[addr].s = {
         border,
         font: {
           name: 'Calibri',
           sz: isHeader ? 11 : 10,
-          bold: isHeader || isTotalCol,
-          color: { rgb: isHeader ? 'FFFFFF' : (isTotalCol ? '8E1C1C' : '2B3244') }
+          bold: isHeader || isTotal,
+          color: { rgb: isHeader ? 'FFFFFF' : (isTotal ? '8E1C1C' : '2B3244') }
         },
         fill: {
           fgColor: {
             rgb: isHeader ? 'C62828' :
-                 (isTotalCol ? 'FDF1F1' :
+                 (isTotal ? 'FDF1F1' :
                   (r % 2 === 0 ? 'FCFDFF' : 'FFFFFF'))
           }
         },
@@ -677,16 +718,15 @@ function exportXLSX(){
     }
   }
 
-  /* ارتفاع صف الرأس */
-  ws['!rows'] = [{ hpt: 30 }];
+  ws['!rows'] = [{ hpt: T ? 40 : 30 }];
 
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, 'Required Items');
-  XLSX.writeFile(wb, `Naif-Required-Items-${dateStamp()}.xlsx`);
+  XLSX.writeFile(wb, `Naif-Required-Items-${T ? 'Transposed-' : ''}${dateStamp()}.xlsx`);
 }
 
 /* =========================================================================
-   8) PDF EXPORT  (single-width page, no signature, no bottom totals)
+   8) PDF EXPORT  (single-width page, no signature, handles both orientations)
    ========================================================================= */
 function loadImageData(src){
   return new Promise(resolve => {
@@ -705,7 +745,7 @@ function loadImageData(src){
   });
 }
 
-function drawDocHeader(doc, R, logo, pageW){
+function drawDocHeader(doc, R, logo, pageW, T){
   if (logo){ try{ doc.addImage(logo, 'JPEG', 18, 10, 40, 40); }catch(e){} }
 
   doc.setFont('helvetica', 'bold');
@@ -716,7 +756,9 @@ function drawDocHeader(doc, R, logo, pageW){
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(8);
   doc.setTextColor(70, 76, 90);
-  doc.text('Required Items Quantities by Site', pageW / 2, 34, { align: 'center' });
+  doc.text(T ? 'Required Items Quantities — Sites as Rows'
+              : 'Required Items Quantities by Site',
+           pageW / 2, 34, { align: 'center' });
 
   let line3 = 'Generated: ' + nowStamp();
   if (R.period) line3 += '     |     ' + R.period;
@@ -727,11 +769,9 @@ function drawDocHeader(doc, R, logo, pageW){
   doc.setDrawColor(198, 40, 40);
   doc.setLineWidth(1);
   doc.line(18, 50, pageW - 18, 50);
-
   return 58;
 }
 
-/* لا توقيع على الورقة — فقط رقم صفحة وشريط الشركة */
 function drawFooter(doc, p, total, pageW, pageH){
   const y = pageH - 18;
   doc.setDrawColor(198, 40, 40);
@@ -747,7 +787,8 @@ function drawFooter(doc, p, total, pageW, pageH){
 
 async function exportPDF(){
   if (!state.report){ alert('يرجى رفع ملف البيانات أولاً.'); return; }
-  const R = state.report;
+  const R  = state.report;
+  const T  = state.opts.transpose;
   const btn = document.getElementById('btnPdf');
   const oldLabel = btn.innerHTML;
   btn.disabled = true;
@@ -760,88 +801,128 @@ async function exportPDF(){
     const pageH = doc.internal.pageSize.getHeight();  // 595
 
     const logo   = await loadImageData(LOGO_URL);
-    const startY = drawDocHeader(doc, R, logo, pageW);
-
-    const n = R.sites.length;
-
-    /* ---------- حساب عرض الأعمدة لضمان صفحة واحدة أفقياً ---------- */
+    const startY = drawDocHeader(doc, R, logo, pageW, T);
     const availW = pageW - 36; // 806
-    const idxW  = 12;
-    const itemW = 100;
-    const totW  = 20;
-    const forSites = availW - idxW - itemW - totW; // 674
-    const siteW = Math.max(6, Math.floor(forSites / Math.max(n, 1)));
 
-    /* حجم الخط يقل كلما زاد عدد المطاعم */
-    let baseFont;
-    if (n <= 15) baseFont = 6.2;
-    else if (n <= 25) baseFont = 5.4;
-    else if (n <= 40) baseFont = 4.6;
-    else if (n <= 55) baseFont = 4.0;
-    else baseFont = 3.5;
-    const headFont = Math.max(3, baseFont - 0.8);
+    if (!T){
+      /* =============== NORMAL: rows=items, cols=sites =============== */
+      const n = R.sites.length;
+      const idxW  = 12;
+      const itemW = 100;
+      const totW  = 20;
+      const siteW = Math.max(6, Math.floor((availW - idxW - itemW - totW) / Math.max(n, 1)));
 
-    /* ---------- بناء الجدول ---------- */
-    const head = [['#', 'Item', ...R.sites, 'Total']];
-    const body = R.rows.map((r, i) => [
-      String(i + 1),
-      r.name,
-      ...r.values.map(v => v ? fmtNum(v) : ''),
-      r.total ? fmtNum(r.total) : ''
-    ]);
-    /* لا صف إجماليات أسفل الجدول (الأصناف مختلفة) */
+      let baseFont;
+      if (n <= 15) baseFont = 6.2;
+      else if (n <= 25) baseFont = 5.4;
+      else if (n <= 40) baseFont = 4.6;
+      else if (n <= 55) baseFont = 4.0;
+      else baseFont = 3.5;
+      const headFont = Math.max(3, baseFont - 0.8);
 
-    const colStyles = {
-      0: { cellWidth: idxW, halign: 'center' },
-      1: { cellWidth: itemW, halign: 'left', fontStyle: 'bold' },
-      [n + 2]: { cellWidth: totW, fontStyle: 'bold' }
-    };
-    for (let i = 0; i < n; i++) colStyles[i + 2] = { cellWidth: siteW, halign: 'center' };
+      const head = [['#', 'Item', ...R.sites, 'Total']];
+      const body = R.rows.map((r, i) => [
+        String(i + 1), r.name,
+        ...r.values.map(v => v ? fmtNum(v) : ''),
+        r.total ? fmtNum(r.total) : ''
+      ]);
 
-    doc.autoTable({
-      head, body,
-      startY,
-      margin: { left: 18, right: 18, top: 26, bottom: 26 },
-      theme: 'grid',
-      /* ★ منع الانقسام الأفقي — كل الأعمدة في صفحة واحدة */
-      horizontalPageBreak: false,
-      styles: {
-        font: 'helvetica',
-        fontSize: baseFont,
-        cellPadding: { top: 1.4, bottom: 1.4, left: 0.6, right: 0.6 },
-        halign: 'center',
-        valign: 'middle',
-        lineColor: [212, 218, 228],
-        lineWidth: 0.25,
-        textColor: [30, 34, 45],
-        overflow: 'linebreak'
-      },
-      headStyles: {
-        fillColor: [198, 40, 40],
-        textColor: [255, 255, 255],
-        fontStyle: 'bold',
-        halign: 'center',
-        valign: 'bottom',
-        fontSize: headFont,
-        minCellHeight: 20
-      },
-      alternateRowStyles: { fillColor: [250, 251, 253] },
-      columnStyles: colStyles,
-      didParseCell: function(data){
-        if (data.section === 'body' && data.column.index === n + 2){
-          data.cell.styles.textColor = [140, 25, 25];
+      const colStyles = {
+        0: { cellWidth: idxW, halign: 'center' },
+        1: { cellWidth: itemW, halign: 'left', fontStyle: 'bold' },
+        [n + 2]: { cellWidth: totW, fontStyle: 'bold' }
+      };
+      for (let i = 0; i < n; i++) colStyles[i + 2] = { cellWidth: siteW, halign: 'center' };
+
+      doc.autoTable({
+        head, body, startY,
+        margin: { left: 18, right: 18, top: 26, bottom: 26 },
+        theme: 'grid',
+        horizontalPageBreak: false,
+        styles: {
+          font: 'helvetica', fontSize: baseFont,
+          cellPadding: { top: 1.4, bottom: 1.4, left: 0.6, right: 0.6 },
+          halign: 'center', valign: 'middle',
+          lineColor: [212, 218, 228], lineWidth: 0.25,
+          textColor: [30, 34, 45], overflow: 'linebreak'
+        },
+        headStyles: {
+          fillColor: [198, 40, 40], textColor: [255, 255, 255],
+          fontStyle: 'bold', halign: 'center', valign: 'bottom',
+          fontSize: headFont, minCellHeight: 20
+        },
+        alternateRowStyles: { fillColor: [250, 251, 253] },
+        columnStyles: colStyles,
+        didParseCell: function(data){
+          if (data.section === 'body' && data.column.index === n + 2){
+            data.cell.styles.textColor = [140, 25, 25];
+          }
         }
-      }
-    });
+      });
+    } else {
+      /* =============== TRANSPOSED: rows=sites, cols=items =============== */
+      const itemCount = R.rows.length;
+      const idxW  = 12;
+      const siteW = 110;
+      const itemW = Math.max(6, Math.floor((availW - idxW - siteW) / Math.max(itemCount, 1)));
 
-    /* ---------- التذييل ورقم الصفحة ---------- */
+      let baseFont;
+      if (itemCount <= 10) baseFont = 7.0;
+      else if (itemCount <= 20) baseFont = 5.5;
+      else if (itemCount <= 30) baseFont = 4.5;
+      else if (itemCount <= 45) baseFont = 3.8;
+      else baseFont = 3.2;
+      const headFont = Math.max(2.8, baseFont - 0.8);
+
+      const head = [['#', 'Site', ...R.rows.map(r => r.name)]];
+      const body = R.sites.map((s, si) => [
+        String(si + 1), s,
+        ...R.rows.map(r => r.values[si] ? fmtNum(r.values[si]) : '')
+      ]);
+      const foot = [['', 'TOTAL', ...R.rows.map(r => r.total ? fmtNum(r.total) : '')]];
+
+      const colStyles = {
+        0: { cellWidth: idxW, halign: 'center' },
+        1: { cellWidth: siteW, halign: 'left', fontStyle: 'bold' }
+      };
+      for (let i = 0; i < itemCount; i++) colStyles[i + 2] = { cellWidth: itemW, halign: 'center' };
+
+      doc.autoTable({
+        head, body, foot, startY,
+        margin: { left: 18, right: 18, top: 26, bottom: 26 },
+        theme: 'grid',
+        horizontalPageBreak: false,
+        showFoot: 'lastPage',
+        styles: {
+          font: 'helvetica', fontSize: baseFont,
+          cellPadding: { top: 1.4, bottom: 1.4, left: 0.5, right: 0.5 },
+          halign: 'center', valign: 'middle',
+          lineColor: [212, 218, 228], lineWidth: 0.25,
+          textColor: [30, 34, 45], overflow: 'linebreak'
+        },
+        headStyles: {
+          fillColor: [198, 40, 40], textColor: [255, 255, 255],
+          fontStyle: 'bold', halign: 'center', valign: 'bottom',
+          fontSize: headFont, minCellHeight: 30
+        },
+        footStyles: {
+          fillColor: [253, 241, 241], textColor: [142, 28, 28],
+          fontStyle: 'bold', fontSize: baseFont,
+          lineWidth: 0.4, lineColor: [198, 40, 40]
+        },
+        alternateRowStyles: { fillColor: [250, 251, 253] },
+        columnStyles: colStyles
+      });
+    }
+
+    /* Footer with page numbers */
     const pageCount = doc.getNumberOfPages();
     for (let p = 1; p <= pageCount; p++){
       doc.setPage(p);
       drawFooter(doc, p, pageCount, pageW, pageH);
     }
 
-    doc.save(`Naif-Required-Items-${dateStamp()}.pdf`);
+    doc.save(`Naif-Required-Items-${T ? 'Transposed-' : ''}${dateStamp()}.pdf`);
 
   } catch (err){
     console.error(err);
@@ -872,6 +953,11 @@ async function exportPDF(){
 
   document.getElementById('optHideEmpty').addEventListener('change', e => {
     state.opts.hideEmpty = e.target.checked;
+    if (state.parsed) render();
+  });
+
+  document.getElementById('btnTranspose').addEventListener('click', () => {
+    state.opts.transpose = !state.opts.transpose;
     if (state.parsed) render();
   });
 
