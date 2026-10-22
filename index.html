@@ -252,7 +252,7 @@ const ITEMS = [
   "Hummus _Z","Large Barbecue Sauce","Large Cheddar Sauce","Large Chilli Mayo Sauce",
   "large dynamite garlic","Large Honey Mustard","Large Maboug Sauce","Large Mayo Ketchup",
   "Large Mayonnaise Sauce","Large Peri Peri Sauce","Large Ranch Sauce","Large Spicy Cheese sauce",
-  "large sweet spicy sauce","mutabbal","ONION RINGS _Z","ONION RINGS FAMILY_Z","Puri Bread_Z",
+  "large sweet spicy sauce","mutabbal","Moutable _Z","ONION RINGS _Z","ONION RINGS FAMILY_Z","Puri Bread_Z",
   "Rocca Salad _Z","Tabbouleh _Z","XLarge Barbecue Sauce","xlarge cheddar sauce",
   "XLarge Chilli Mayo Sauce","XLarge Honey Mustard","xlarge maboug sauce","xlarge mayo ketchup",
   "xlarge mayonnaise sauce","XLarge Peri Peri Sauce","xlarge pink sauce","xlarge ranch sauce",
@@ -634,7 +634,6 @@ function exportXLSX(){
   let aoa, numCols, isTotalCell;
 
   if (!T){
-    /* rows = items, cols = sites + Total column */
     aoa = [
       ['#', 'Item', ...R.sites, 'Total'],
       ...R.rows.map((r, i) => [
@@ -647,7 +646,6 @@ function exportXLSX(){
     numCols = 2 + R.sites.length + 1;
     isTotalCell = (r, c) => c === numCols - 1;
   } else {
-    /* rows = sites, cols = items, Total row at bottom */
     aoa = [
       ['#', 'Site', ...R.rows.map(r => r.name)],
       ...R.sites.map((s, si) => [
@@ -663,7 +661,6 @@ function exportXLSX(){
 
   const ws = XLSX.utils.aoa_to_sheet(aoa);
 
-  /* Column widths */
   if (!T){
     ws['!cols'] = [
       { wch: 5 },
@@ -679,7 +676,6 @@ function exportXLSX(){
     ];
   }
 
-  /* Thin borders everywhere */
   const thin = { style: 'thin', color: { rgb: 'C0C0C0' } };
   const border = { top: thin, bottom: thin, left: thin, right: thin };
 
@@ -726,7 +722,7 @@ function exportXLSX(){
 }
 
 /* =========================================================================
-   8) PDF EXPORT  (single-width page, no signature, handles both orientations)
+   8) PDF EXPORT
    ========================================================================= */
 function loadImageData(src){
   return new Promise(resolve => {
@@ -797,15 +793,14 @@ async function exportPDF(){
   try{
     const { jsPDF } = window.jspdf;
     const doc   = new jsPDF({ orientation: 'landscape', unit: 'pt', format: 'a4', compress: true });
-    const pageW = doc.internal.pageSize.getWidth();   // 842
-    const pageH = doc.internal.pageSize.getHeight();  // 595
+    const pageW = doc.internal.pageSize.getWidth();
+    const pageH = doc.internal.pageSize.getHeight();
 
     const logo   = await loadImageData(LOGO_URL);
     const startY = drawDocHeader(doc, R, logo, pageW, T);
-    const availW = pageW - 36; // 806
+    const availW = pageW - 36;
 
     if (!T){
-      /* =============== NORMAL: rows=items, cols=sites =============== */
       const n = R.sites.length;
       const idxW  = 12;
       const itemW = 100;
@@ -860,7 +855,6 @@ async function exportPDF(){
         }
       });
     } else {
-      /* =============== TRANSPOSED: rows=sites, cols=items =============== */
       const itemCount = R.rows.length;
       const idxW  = 12;
       const siteW = 110;
@@ -915,7 +909,6 @@ async function exportPDF(){
       });
     }
 
-    /* Footer with page numbers */
     const pageCount = doc.getNumberOfPages();
     for (let p = 1; p <= pageCount; p++){
       doc.setPage(p);
