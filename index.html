@@ -65,6 +65,112 @@
   .btn-transpose{background:#0d47a1;color:#fff;box-shadow:0 4px 14px rgba(13,71,161,.25)}
   .btn-transpose:hover:not(:disabled){background:#0a3880;transform:translateY(-1px)}
 
+  /* ============ Items Page (separate view) ============ */
+  .items-page-head{
+    display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+    padding-bottom:14px;margin-bottom:14px;border-bottom:2px solid #f0f2f7;
+  }
+  .items-page-head .back-btn{
+    font-size:.85rem;padding:8px 14px;
+  }
+  .items-page-head h2{
+    margin:0;font-size:1.05rem;color:#c62828;font-weight:800;
+  }
+  .items-page-head .sub{
+    font-size:.75rem;color:#6b7488;margin-top:3px;
+  }
+  .items-page-head .items-count{
+    margin-inline-start:auto;
+    font-size:.78rem;color:#6b7488;font-weight:700;background:#f2f5fa;
+    padding:5px 12px;border-radius:20px;border:1px solid #e4eaf2;
+  }
+
+  .items-info{
+    background:#eef4ff;color:#0d47a1;padding:10px 14px;border-radius:9px;
+    font-size:.8rem;font-weight:600;margin-bottom:12px;
+    border:1px solid #d3e0fb;line-height:1.7;
+  }
+
+  .items-add{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+  .items-add input{flex:1 1 240px;padding:8px 12px;border:1px solid #d4dae5;border-radius:8px;
+                   font-size:.85rem;font-family:inherit;min-width:180px}
+  .items-add input:focus{outline:none;border-color:#c62828;box-shadow:0 0 0 3px rgba(198,40,40,.1)}
+
+  .items-search-row{margin-bottom:12px}
+  .items-search-row input{width:100%;padding:9px 14px;border:1px solid #d4dae5;border-radius:8px;
+                          font-size:.85rem;font-family:inherit}
+  .items-search-row input:focus{outline:none;border-color:#c62828}
+
+  .items-toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+
+  /* Vertical items list */
+  .items-list{
+    max-height:calc(100vh - 340px);
+    min-height:200px;
+    overflow-y:auto;
+    display:flex;flex-direction:column;gap:16px;
+    padding:12px;background:#fafbfd;border-radius:10px;border:1px solid #eef1f6;
+    scrollbar-width:thin;
+  }
+  .items-list::-webkit-scrollbar{width:10px}
+  .items-list::-webkit-scrollbar-thumb{background:#c9d2e0;border-radius:8px}
+
+  .items-section{display:flex;flex-direction:column;gap:5px}
+
+  .items-section-head{
+    font-size:.8rem;font-weight:800;color:#c62828;
+    padding:8px 10px;display:flex;align-items:center;gap:8px;
+    background:#fff3f3;border-radius:7px;border:1px solid #f7dede;
+    position:sticky;top:-12px;z-index:2;
+    box-shadow:0 2px 6px rgba(198,40,40,.06);
+  }
+  .items-section-head .count{
+    background:#fff;color:#c62828;padding:1px 9px;border-radius:12px;
+    font-size:.7rem;border:1px solid #f5d5d5;margin-inline-start:auto;
+  }
+  .items-section-head.section-base-selected{background:#eefaf1;border-color:#cbeed7;color:#1b6b33}
+  .items-section-head.section-base-selected .count{color:#1b6b33;border-color:#cbeed7}
+  .items-section-head.section-other{background:#fff5e6;border-color:#f5e0b8;color:#b45309}
+  .items-section-head.section-other .count{color:#b45309;border-color:#f5e0b8}
+
+  .items-section-hint{
+    font-size:.73rem;color:#6b7488;padding:2px 6px 8px;font-weight:600;
+  }
+
+  .item-row{
+    display:flex;align-items:center;gap:8px;
+    padding:7px 11px;background:#fff;border-radius:7px;
+    border:1px solid #edf0f5;font-size:.83rem;transition:.15s;
+  }
+  .item-row:hover{border-color:#f0c4c4;background:#fffafa}
+  .item-row.is-custom{background:#fffaf0;border-color:#f5e0b8}
+  .item-row.is-file{background:#f0f8ff;border-color:#c8e0f5}
+  .item-row.is-checked{background:#f1faf4;border-color:#bfe5cb}
+  .item-row.is-checked .lbl{color:#1b6b33;font-weight:700}
+
+  .item-row > label{
+    display:flex;align-items:center;gap:9px;flex:1;cursor:pointer;
+    min-width:0;overflow:hidden;
+  }
+
+  .item-row input[type=checkbox]{width:16px;height:16px;accent-color:#c62828;cursor:pointer;flex-shrink:0}
+
+  .item-row .lbl{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+                 color:#2b3244;font-weight:600;font-family:'Segoe UI',Tahoma,Arial,sans-serif}
+
+  .item-row .badge{
+    font-size:.65rem;padding:2px 8px;border-radius:10px;font-weight:700;
+    background:#e3f2fd;color:#0d47a1;border:1px solid #bbdefb;
+    flex-shrink:0;white-space:nowrap;
+  }
+  .item-row .badge.custom{background:#fff3e0;color:#e65100;border-color:#ffe0b2}
+
+  .item-row .del{background:none;border:0;color:#c62828;cursor:pointer;font-size:.85rem;
+                 padding:2px 8px;border-radius:4px;font-weight:800;line-height:1;flex-shrink:0}
+  .item-row .del:hover{background:#fff0f0}
+
+  .items-empty{text-align:center;color:#98a1b3;padding:30px;font-size:.85rem}
+
   /* ============ Report header ============ */
   .report-head{
     display:flex;align-items:center;gap:14px;flex-wrap:wrap;
@@ -119,8 +225,8 @@
   table.report td.zero{color:transparent}
   table.report td.total-col,
   table.report th.total-col{background:#fdf1f1!important;font-weight:800;color:#8e1c1c}
+  table.report td.empty-msg{padding:40px!important;text-align:center;color:#98a1b3;font-size:14px;font-weight:600}
 
-  /* ===== Transposed mode overrides ===== */
   table.report.transposed thead th.item,
   table.report.transposed tbody td.item{
     min-width:160px;max-width:160px;width:160px;
@@ -140,19 +246,32 @@
   details.notes .chip{background:#fff3f3;border:1px solid #f6d5d5;color:#a51b1b;
                       border-radius:20px;padding:3px 10px;font-size:.72rem;font-weight:600}
 
-  /* ============ Signature (screen only, smaller 25%, red border, blue text) ============ */
+  /* ============ Screen signature (30% smaller) ============ */
   .signature-card{
     position:fixed;bottom:20px;left:20px;
     background:#ffffff;color:#0d47a1;
-    padding:7.88px 13.13px;border-radius:6.38px;border:2px solid #c62828;
+    padding:5.52px 9.19px;
+    border-radius:4.47px;
+    border:2px solid #c62828;
     box-shadow:none;
     font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
-    font-size:0.60rem;font-weight:600;z-index:1000;
-    transition:all .3s ease;cursor:pointer;text-decoration:none;display:inline-block;
+    font-size:0.42rem;
+    font-weight:600;
+    z-index:1000;
+    transition:all .3s ease;
+    cursor:pointer;text-decoration:none;display:inline-block;
+    line-height:1.3;
   }
   .signature-card:hover{transform:scale(1.05)}
-  .signature-card .name{font-size:0.7125rem;font-weight:700;margin-bottom:3.75px;color:#0d47a1}
-  .signature-card .title{font-size:0.525rem;opacity:.95;font-weight:600;color:#0d47a1}
+  .signature-card .name{
+    font-size:0.499rem;font-weight:700;margin-bottom:2.63px;color:#0d47a1;
+  }
+  .signature-card .role{
+    font-size:0.368rem;font-weight:700;color:#0d47a1;opacity:.95;margin-bottom:1.5px;
+  }
+  .signature-card .phone{
+    font-size:0.34rem;font-weight:600;color:#0d47a1;opacity:.85;
+  }
   @media (max-width:768px){
     .signature-card{position:relative;bottom:auto;left:auto;margin:20px auto 0;width:fit-content}
     .signature-card:hover{transform:none}
@@ -162,7 +281,8 @@
   @media print{
     @page{size:A4 landscape;margin:8mm}
     body{background:#fff;padding:0}
-    .topbar,.no-print,.signature-card{display:none!important}
+    .topbar,.no-print,.signature-card,#itemsView{display:none!important}
+    #reportView{display:block!important}
     .card{box-shadow:none;border:0;padding:0;margin:0}
     .table-wrap{max-height:none;overflow:visible;border:0}
     table.report{font-size:7px}
@@ -184,57 +304,112 @@
 
 <div class="app">
 
-  <!-- ================= UPLOAD ================= -->
-  <section class="card upload-bar no-print">
-    <button class="btn btn-primary" id="btnUpload">📂 تحميل ملف Excel</button>
-    <input type="file" id="fileInput" accept=".xlsx,.xls,.csv" hidden>
-    <span class="file-name" id="fileName">لم يتم اختيار ملف</span>
-    <div class="status" id="status"></div>
-  </section>
+  <!-- ============================================================ -->
+  <!-- ==================== REPORT VIEW =========================== -->
+  <!-- ============================================================ -->
+  <div id="reportView">
 
-  <!-- ================= CONTROLS ================= -->
-  <section class="card controls no-print" id="controls" hidden>
-    <label class="ctl"><input type="checkbox" id="optAllSites"> إظهار كل المطاعم</label>
-    <label class="ctl"><input type="checkbox" id="optHideEmpty"> إخفاء الأصناف الفارغة</label>
-    <div class="spacer"></div>
-    <button class="btn btn-transpose" id="btnTranspose" title="تبديل بين عرض المطاعم كصفوف أو كأعمدة">🔄 قلب الجدول</button>
-    <button class="btn btn-green" id="btnXlsx">📥 تحميل Excel</button>
-    <button class="btn btn-outline" id="btnPrint">🖨️ طباعة</button>
-    <button class="btn btn-primary" id="btnPdf">📄 تصدير PDF</button>
-  </section>
+    <!-- Upload -->
+    <section class="card upload-bar no-print">
+      <button class="btn btn-primary" id="btnUpload">📂 تحميل ملف Excel</button>
+      <input type="file" id="fileInput" accept=".xlsx,.xls,.csv" hidden>
+      <span class="file-name" id="fileName">لم يتم اختيار ملف</span>
+      <div class="status" id="status"></div>
+    </section>
 
-  <!-- ================= REPORT ================= -->
-  <section class="card" id="reportCard" hidden>
-    <div class="report-head">
-      <img src="https://i.postimg.cc/NM2zJWZD/NAIF-LOGO.jpg" alt="logo">
-      <div class="rh-title">
-        <h2 id="rhTitle">تقرير كميات الأصناف المطلوبة حسب الموقع</h2>
-        <p id="rhSub">Required Items Quantities by Site — Naif Food Company</p>
+    <!-- Controls -->
+    <section class="card controls no-print" id="controls" hidden>
+      <label class="ctl"><input type="checkbox" id="optAllSites"> إظهار كل المطاعم</label>
+      <label class="ctl"><input type="checkbox" id="optHideEmpty"> إخفاء الأصناف الفارغة</label>
+      <div class="spacer"></div>
+      <button class="btn btn-ghost" id="btnItems">⚙️ الأصناف</button>
+      <button class="btn btn-transpose" id="btnTranspose" title="تبديل بين عرض المطاعم كصفوف أو كأعمدة">🔄 قلب الجدول</button>
+      <button class="btn btn-green" id="btnXlsx">📥 تحميل Excel</button>
+      <button class="btn btn-outline" id="btnPrint">🖨️ طباعة</button>
+      <button class="btn btn-primary" id="btnPdf">📄 تصدير PDF</button>
+    </section>
+
+    <!-- Report -->
+    <section class="card" id="reportCard" hidden>
+      <div class="report-head">
+        <img src="https://i.postimg.cc/NM2zJWZD/NAIF-LOGO.jpg" alt="logo">
+        <div class="rh-title">
+          <h2 id="rhTitle">تقرير كميات الأصناف المطلوبة حسب الموقع</h2>
+          <p id="rhSub">Required Items Quantities by Site — Naif Food Company</p>
+        </div>
+        <div class="rh-meta" id="reportMeta"></div>
       </div>
-      <div class="rh-meta" id="reportMeta"></div>
-    </div>
 
-    <div class="stats" id="reportStats"></div>
+      <div class="stats" id="reportStats"></div>
 
-    <div class="table-wrap">
-      <table class="report" id="reportTable">
-        <thead><tr id="theadRow"></tr></thead>
-        <tbody id="tbodyReport"></tbody>
-      </table>
-    </div>
+      <div class="table-wrap">
+        <table class="report" id="reportTable">
+          <thead><tr id="theadRow"></tr></thead>
+          <tbody id="tbodyReport"></tbody>
+        </table>
+      </div>
 
-    <details class="notes" id="notesBox" hidden>
-      <summary>أصناف ظهرت في الملف ولم يتم مطابقتها مع قائمة الأصناف المطلوبة</summary>
-      <div class="chips" id="notesChips"></div>
-    </details>
-  </section>
+      <details class="notes" id="notesBox" hidden>
+        <summary>أصناف ظهرت في الملف ولم يتم مطابقتها مع قائمة الأصناف المطلوبة</summary>
+        <div class="chips" id="notesChips"></div>
+      </details>
+    </section>
+
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- ==================== ITEMS VIEW ============================ -->
+  <!-- ============================================================ -->
+  <div id="itemsView" hidden>
+
+    <section class="card no-print">
+      <!-- Page header with back button -->
+      <div class="items-page-head">
+        <button class="btn btn-outline back-btn" id="btnBackToReport">← عودة للتقرير</button>
+        <div>
+          <h2>⚙️ إدارة الأصناف المطلوبة</h2>
+          <div class="sub">Required Items — Manage Selection</div>
+        </div>
+        <span class="items-count" id="itemsCount">0 / 0 مختار</span>
+      </div>
+
+      <div class="items-info">
+        💡 <b>الأصناف غير المختارة تظهر أولاً</b> — اضغط على أي صنف لإضافته إلى التقرير.
+        تحتها تظهر <b>الأصناف الأساسية المختارة</b> افتراضياً.
+        الأصناف الموجودة في الملف فقط (غير أساسية) تظهر بشارة زرقاء "من الملف".
+      </div>
+
+      <!-- Add new item -->
+      <div class="items-add">
+        <input type="text" id="newItemInput" placeholder="اسم الصنف الجديد..." dir="ltr">
+        <button class="btn btn-green" id="btnAddItem">➕ إضافة صنف</button>
+      </div>
+
+      <!-- Search -->
+      <div class="items-search-row">
+        <input type="text" id="itemsSearch" placeholder="🔍 بحث في الأصناف..." dir="ltr">
+      </div>
+
+      <!-- Toolbar -->
+      <div class="items-toolbar">
+        <button class="btn btn-ghost" id="btnSelectAll">✓ تحديد الكل</button>
+        <button class="btn btn-ghost" id="btnDeselectAll">✗ إلغاء تحديد الكل</button>
+        <button class="btn btn-ghost" id="btnResetItems">↺ إعادة تعيين الافتراضي</button>
+      </div>
+
+      <!-- Items list -->
+      <div class="items-list" id="itemsList"></div>
+    </section>
+
+  </div>
 
 </div>
 
-<!-- ================= SIGNATURE (screen only) ================= -->
+<!-- ================= SCREEN SIGNATURE (30% smaller) ================= -->
 <a href="https://yasser-q8.github.io/myprofile/#" class="signature-card" target="_blank" rel="noopener noreferrer">
   <div class="name">Yasser Elkhateeb</div>
-  <div class="title">مطور البرنامج 67011143</div>
+  <div class="role">مطور البرنامج</div>
+  <div class="phone">67011143</div>
 </a>
 
 <script>
@@ -246,6 +421,7 @@ const COMPANY_AR = 'شركة نايف للأغذية';
 const COMPANY_EN = 'Naif Food Company';
 const DEV_NAME   = 'Yasser Elkhateeb';
 const DEV_PHONE  = '67011143';
+const DEV_ROLE_AR = 'مطور البرنامج';
 
 const ITEMS = [
   "Cheesy Fries","Chick Fries","COLE SLAW Large _Z","COLE SLAW Small _Z","Fattoush _Z",
@@ -303,7 +479,6 @@ function dateStamp(){
 }
 
 const SITE_NORMS = new Map(SITES.map(s => [norm(s), s]));
-const ITEM_NORMS = new Map(ITEMS.map(s => [norm(s), s]));
 
 const siteCache = new Map();
 function resolveSiteName(raw){
@@ -326,7 +501,39 @@ function resolveSiteName(raw){
 }
 
 /* =========================================================================
-   3) PARSING
+   3) ITEMS STATE
+   ========================================================================= */
+const selectedItems = new Set(ITEMS);
+let customItems = [];
+
+function getAllItems(){
+  const seen = new Set();
+  const result = [];
+
+  for (const name of ITEMS){
+    const k = norm(name);
+    if (!seen.has(k)){ seen.add(k); result.push({ name, kind: 'base' }); }
+  }
+  for (const name of customItems){
+    const k = norm(name);
+    if (!seen.has(k)){ seen.add(k); result.push({ name, kind: 'custom' }); }
+  }
+  if (state.parsed && state.parsed.itemRaw){
+    for (const [k, rawName] of state.parsed.itemRaw){
+      if (!seen.has(k)){ seen.add(k); result.push({ name: rawName, kind: 'file' }); }
+    }
+  }
+  return result;
+}
+
+function getActiveItems(){
+  return getAllItems()
+    .filter(x => selectedItems.has(x.name))
+    .map(x => x.name);
+}
+
+/* =========================================================================
+   4) PARSING
    ========================================================================= */
 function isNoiseRow(a){
   const l = a.toLowerCase();
@@ -428,7 +635,7 @@ function addToSite(acc, site, item, qty){
 }
 
 /* =========================================================================
-   4) BUILD REPORT
+   5) BUILD REPORT
    ========================================================================= */
 function buildReport(parsed, opts){
   const siteData = new Map();
@@ -450,7 +657,10 @@ function buildReport(parsed, opts){
   cols = cols.concat(extras);
   if (opts.allSites) cols = SITES.concat(extras);
 
-  let rows = ITEMS.map(name => {
+  const activeItems = getActiveItems();
+  const itemNorms = new Map(activeItems.map(n => [norm(n), n]));
+
+  let rows = activeItems.map(name => {
     const k = norm(name);
     const values = cols.map(c => {
       const m = siteData.get(c);
@@ -466,13 +676,13 @@ function buildReport(parsed, opts){
   const grandTotal = rows.reduce((s, r) => s + r.total, 0);
 
   const unmatched = [];
-  for (const [k, raw] of parsed.itemRaw) if (!ITEM_NORMS.has(k)) unmatched.push(raw);
+  for (const [k, raw] of parsed.itemRaw) if (!itemNorms.has(k)) unmatched.push(raw);
 
   return { sites: cols, rows, siteTotals, grandTotal, period: parsed.period, operator: parsed.operator, unmatched };
 }
 
 /* =========================================================================
-   5) RENDER
+   6) STATE + RENDER REPORT
    ========================================================================= */
 const state = {
   parsed: null,
@@ -486,6 +696,12 @@ function setStatus(msg, type){
   el.textContent = msg || '';
 }
 
+function showView(view){
+  document.getElementById('reportView').hidden = (view !== 'report');
+  document.getElementById('itemsView').hidden = (view !== 'items');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
 function render(){
   if (!state.parsed) return;
   const R = buildReport(state.parsed, state.opts);
@@ -495,7 +711,6 @@ function render(){
   document.getElementById('controls').hidden = false;
   document.getElementById('reportCard').hidden = false;
 
-  /* --- Titles --- */
   document.getElementById('rhTitle').textContent = T
     ? 'تقرير كميات المطاعم حسب الصنف'
     : 'تقرير كميات الأصناف المطلوبة حسب الموقع';
@@ -503,26 +718,29 @@ function render(){
     ? 'Sites as Rows — Items as Columns'
     : 'Required Items Quantities by Site';
 
-  /* --- Meta --- */
   const meta = document.getElementById('reportMeta');
   meta.innerHTML =
     `<div><b>Generated:</b> ${esc(nowStamp())}</div>` +
     (R.period ? `<div><b>Period:</b> ${esc(R.period)}</div>` : '') +
     (R.operator ? `<div><b>Operator:</b> ${esc(R.operator)}</div>` : '');
 
-  /* --- Stats --- */
   document.getElementById('reportStats').innerHTML =
     `<div class="stat">عدد المطاعم<b>${R.sites.length}</b></div>` +
     `<div class="stat">عدد الأصناف<b>${R.rows.length}</b></div>` +
     `<div class="stat">إجمالي الكميات<b>${fmtNum(R.grandTotal) || '0'}</b></div>`;
 
-  /* --- Table class for transposed overrides --- */
   const tbl = document.getElementById('reportTable');
   tbl.classList.toggle('transposed', T);
 
-  /* --- Table head + body --- */
+  if (!R.rows.length){
+    document.getElementById('theadRow').innerHTML = '';
+    document.getElementById('tbodyReport').innerHTML =
+      `<tr><td class="empty-msg" colspan="99">لا توجد أصناف مختارة — افتح "⚙️ الأصناف" لاختيار الأصناف.</td></tr>`;
+    setStatus(`لا توجد أصناف مختارة.`, 'info');
+    return;
+  }
+
   if (!T){
-    /* ==== Normal mode: rows = items, cols = sites + Total ==== */
     let th = `<th class="idx">#</th><th class="item">Item</th>`;
     R.sites.forEach(s => { th += `<th>${esc(s)}</th>`; });
     th += `<th class="total-col">Total</th>`;
@@ -538,7 +756,6 @@ function render(){
     });
     document.getElementById('tbodyReport').innerHTML = tb;
   } else {
-    /* ==== Transposed mode: rows = sites, cols = items, Total row at bottom ==== */
     let th = `<th class="idx">#</th><th class="item">Site</th>`;
     R.rows.forEach(r => { th += `<th>${esc(r.name)}</th>`; });
     document.getElementById('theadRow').innerHTML = th;
@@ -552,7 +769,6 @@ function render(){
       });
       tb += `</tr>`;
     });
-    /* Total row — per item (at bottom of each item column) */
     tb += `<tr class="total-row"><td class="idx"></td><td class="item">TOTAL</td>`;
     R.rows.forEach(r => {
       tb += `<td class="num">${r.total ? fmtNum(r.total) : ''}</td>`;
@@ -561,7 +777,6 @@ function render(){
     document.getElementById('tbodyReport').innerHTML = tb;
   }
 
-  /* --- Notes --- */
   const notes = document.getElementById('notesBox');
   const chips = document.getElementById('notesChips');
   if (R.unmatched.length){
@@ -572,10 +787,187 @@ function render(){
   }
 
   setStatus(`تم التحليل بنجاح — ${R.sites.length} مطعم × ${R.rows.length} صنف ${T ? '(معروض مُقلوب)' : ''}.`, 'ok');
+
+  if (!document.getElementById('itemsView').hidden) renderItemsPanel();
 }
 
 /* =========================================================================
-   6) FILE HANDLING
+   7) ITEMS PANEL  —  Unselected first, then base selected, then other
+   ========================================================================= */
+function renderItemsPanel(){
+  const list = document.getElementById('itemsList');
+  const search = (document.getElementById('itemsSearch').value || '').trim().toLowerCase();
+  const scrollTop = list.scrollTop;
+
+  const all = getAllItems();
+  const checkedCount = all.filter(x => selectedItems.has(x.name)).length;
+  document.getElementById('itemsCount').textContent = `${checkedCount} / ${all.length} مختار`;
+
+  /* ★ Section 1: Unselected (any source) — appears first */
+  const unselected = all.filter(x => !selectedItems.has(x.name));
+
+  /* ★ Section 2: Base items that ARE selected */
+  const selectedBase = all.filter(x => x.kind === 'base' && selectedItems.has(x.name));
+
+  /* ★ Section 3: Custom + file items that ARE selected */
+  const selectedOther = all.filter(x => x.kind !== 'base' && selectedItems.has(x.name));
+
+  const f = arr => search
+    ? arr.filter(x => x.name.toLowerCase().includes(search))
+    : arr;
+
+  const sec1 = f(unselected);
+  const sec2 = f(selectedBase);
+  const sec3 = f(selectedOther);
+
+  const sections = [];
+  if (sec1.length){
+    sections.push(renderSection(
+      '⚪ أصناف غير مختارة — اضغط لإضافتها للتقرير',
+      sec1, 'unselected',
+      'هذه الأصناف متاحة للإضافة. اضغط على الصنف لتحديده.'
+    ));
+  }
+  if (sec2.length){
+    sections.push(renderSection(
+      '📋 الأصناف الأساسية المختارة',
+      sec2, 'base-selected', ''
+    ));
+  }
+  if (sec3.length){
+    sections.push(renderSection(
+      '✓ أصناف مختارة أخرى (مضافة أو من الملف)',
+      sec3, 'other-selected', ''
+    ));
+  }
+
+  if (!sections.length){
+    list.innerHTML = `<div class="items-empty">${search ? 'لا نتائج مطابقة للبحث.' : 'لا توجد أصناف.'}</div>`;
+    return;
+  }
+
+  list.innerHTML = sections.join('');
+  list.scrollTop = scrollTop;
+}
+
+function renderSection(title, items, cls, hint){
+  const checkCount = items.filter(x => selectedItems.has(x.name)).length;
+  const headCls = cls === 'base-selected' ? ' section-base-selected'
+                : cls === 'other-selected' ? ' section-other' : '';
+
+  let html = `<div class="items-section">
+    <div class="items-section-head${headCls}">
+      <span>${title}</span>
+      <span class="count">${checkCount} / ${items.length}</span>
+    </div>`;
+
+  if (hint) html += `<div class="items-section-hint">${hint}</div>`;
+
+  for (const x of items){
+    const checked = selectedItems.has(x.name);
+    const rowCls = `item-row${x.kind === 'custom' ? ' is-custom' : ''}${x.kind === 'file' ? ' is-file' : ''}${checked ? ' is-checked' : ''}`;
+
+    let badge = '';
+    if (x.kind === 'custom') badge = '<span class="badge custom">مضاف</span>';
+    else if (x.kind === 'file') badge = '<span class="badge">من الملف</span>';
+
+    const del = x.kind === 'custom'
+      ? `<button class="del" data-del="${esc(x.name)}" title="حذف الصنف">✕</button>`
+      : '';
+
+    html += `<div class="${rowCls}">
+      <label>
+        <input type="checkbox" data-name="${esc(x.name)}" ${checked ? 'checked' : ''}>
+        <span class="lbl" title="${esc(x.name)}">${esc(x.name)}</span>
+      </label>
+      ${badge}${del}
+    </div>`;
+  }
+
+  html += '</div>';
+  return html;
+}
+
+/* Events for items list */
+document.getElementById('itemsList').addEventListener('change', e => {
+  if (e.target.type === 'checkbox'){
+    const name = e.target.dataset.name;
+    if (e.target.checked) selectedItems.add(name);
+    else selectedItems.delete(name);
+    if (state.parsed) render();
+    else renderItemsPanel();
+  }
+});
+
+document.getElementById('itemsList').addEventListener('click', e => {
+  if (e.target.dataset.del !== undefined){
+    const name = e.target.dataset.del;
+    if (confirm(`حذف الصنف "${name}" من القائمة؟`)){
+      customItems = customItems.filter(c => c !== name);
+      selectedItems.delete(name);
+      renderItemsPanel();
+      if (state.parsed) render();
+    }
+  }
+});
+
+document.getElementById('btnAddItem').addEventListener('click', () => {
+  const input = document.getElementById('newItemInput');
+  const name = input.value.trim();
+  if (!name) return;
+
+  const allNorm = new Set(getAllItems().map(x => norm(x.name)));
+  if (allNorm.has(norm(name))){
+    alert('هذا الصنف موجود بالفعل في القائمة.');
+    return;
+  }
+
+  customItems.push(name);
+  selectedItems.add(name);
+  input.value = '';
+  renderItemsPanel();
+  if (state.parsed) render();
+});
+
+document.getElementById('newItemInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') document.getElementById('btnAddItem').click();
+});
+
+document.getElementById('itemsSearch').addEventListener('input', renderItemsPanel);
+
+document.getElementById('btnSelectAll').addEventListener('click', () => {
+  getAllItems().forEach(x => selectedItems.add(x.name));
+  renderItemsPanel();
+  if (state.parsed) render();
+});
+
+document.getElementById('btnDeselectAll').addEventListener('click', () => {
+  selectedItems.clear();
+  renderItemsPanel();
+  if (state.parsed) render();
+});
+
+document.getElementById('btnResetItems').addEventListener('click', () => {
+  if (!confirm('إعادة تعيين الأصناف إلى الافتراضي؟ سيتم حذف الأصناف المضافة وإلغاء تحديد أصناف الملف.')) return;
+  customItems = [];
+  selectedItems.clear();
+  ITEMS.forEach(n => selectedItems.add(n));
+  renderItemsPanel();
+  if (state.parsed) render();
+});
+
+/* View switching */
+document.getElementById('btnItems').addEventListener('click', () => {
+  showView('items');
+  renderItemsPanel();
+});
+
+document.getElementById('btnBackToReport').addEventListener('click', () => {
+  showView('report');
+});
+
+/* =========================================================================
+   8) FILE HANDLING
    ========================================================================= */
 async function handleFile(file){
   if (!file) return;
@@ -616,6 +1008,7 @@ async function handleFile(file){
     state.parsed = acc;
     siteCache.clear();
     render();
+    showView('report');
 
   } catch (err){
     console.error(err);
@@ -624,61 +1017,50 @@ async function handleFile(file){
 }
 
 /* =========================================================================
-   7) XLSX EXPORT  (handles both orientations)
+   9) XLSX EXPORT
    ========================================================================= */
 function exportXLSX(){
   if (!state.report){ alert('يرجى رفع ملف البيانات أولاً.'); return; }
   const R = state.report;
   const T = state.opts.transpose;
 
-  let aoa, numCols, isTotalCell;
+  if (!R.rows.length){ alert('لا توجد أصناف مختارة للتصدير.'); return; }
+
+  let aoa, isTotalCell;
 
   if (!T){
     aoa = [
       ['#', 'Item', ...R.sites, 'Total'],
       ...R.rows.map((r, i) => [
-        i + 1,
-        r.name,
+        i + 1, r.name,
         ...r.values.map(v => v ? +fmtNum(v) : ''),
         r.total ? +fmtNum(r.total) : ''
       ])
     ];
-    numCols = 2 + R.sites.length + 1;
-    isTotalCell = (r, c) => c === numCols - 1;
+    const totalColIdx = 2 + R.sites.length;
+    isTotalCell = (r, c) => c === totalColIdx;
   } else {
     aoa = [
       ['#', 'Site', ...R.rows.map(r => r.name)],
       ...R.sites.map((s, si) => [
-        si + 1,
-        s,
+        si + 1, s,
         ...R.rows.map(r => r.values[si] ? +fmtNum(r.values[si]) : '')
       ]),
       ['', 'TOTAL', ...R.rows.map(r => r.total ? +fmtNum(r.total) : '')]
     ];
-    numCols = 2 + R.rows.length;
-    isTotalCell = (r, c) => r === aoa.length - 1;
+    isTotalCell = (r) => r === aoa.length - 1;
   }
 
   const ws = XLSX.utils.aoa_to_sheet(aoa);
 
   if (!T){
-    ws['!cols'] = [
-      { wch: 5 },
-      { wch: 32 },
-      ...R.sites.map(() => ({ wch: 12 })),
-      { wch: 10 }
-    ];
+    ws['!cols'] = [{ wch: 5 }, { wch: 32 }, ...R.sites.map(() => ({ wch: 12 })), { wch: 10 }];
   } else {
-    ws['!cols'] = [
-      { wch: 5 },
-      { wch: 26 },
-      ...R.rows.map(() => ({ wch: 11 }))
-    ];
+    ws['!cols'] = [{ wch: 5 }, { wch: 26 }, ...R.rows.map(() => ({ wch: 11 }))];
   }
 
   const thin = { style: 'thin', color: { rgb: 'C0C0C0' } };
   const border = { top: thin, bottom: thin, left: thin, right: thin };
-
   const range = XLSX.utils.decode_range(ws['!ref']);
 
   for (let r = range.s.r; r <= range.e.r; r++){
@@ -686,24 +1068,19 @@ function exportXLSX(){
       const addr = XLSX.utils.encode_cell({ r, c });
       if (!ws[addr]) ws[addr] = { t: 's', v: '' };
 
-      const isHeader   = r === 0;
-      const isTotal    = isTotalCell(r, c);
-      const isItemCol  = c === 1;
+      const isHeader  = r === 0;
+      const isTotal   = isTotalCell(r, c);
+      const isItemCol = c === 1;
 
       ws[addr].s = {
         border,
         font: {
-          name: 'Calibri',
-          sz: isHeader ? 11 : 10,
+          name: 'Calibri', sz: isHeader ? 11 : 10,
           bold: isHeader || isTotal,
           color: { rgb: isHeader ? 'FFFFFF' : (isTotal ? '8E1C1C' : '2B3244') }
         },
         fill: {
-          fgColor: {
-            rgb: isHeader ? 'C62828' :
-                 (isTotal ? 'FDF1F1' :
-                  (r % 2 === 0 ? 'FCFDFF' : 'FFFFFF'))
-          }
+          fgColor: { rgb: isHeader ? 'C62828' : (isTotal ? 'FDF1F1' : (r % 2 === 0 ? 'FCFDFF' : 'FFFFFF')) }
         },
         alignment: {
           horizontal: isItemCol ? 'left' : 'center',
@@ -722,7 +1099,7 @@ function exportXLSX(){
 }
 
 /* =========================================================================
-   8) PDF EXPORT
+   10) PDF EXPORT
    ========================================================================= */
 function loadImageData(src){
   return new Promise(resolve => {
@@ -768,8 +1145,38 @@ function drawDocHeader(doc, R, logo, pageW, T){
   return 58;
 }
 
+/* Create Arabic-capable text image for PDF footer signature */
+function makeSignatureImage(text, fontSize, color){
+  fontSize = fontSize || 24;
+  color = color || '#a0a0a0';
+
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+
+  const fontStr = `${fontSize}px "Segoe UI", "Tahoma", "Arial", sans-serif`;
+  ctx.font = fontStr;
+
+  const textWidth = ctx.measureText(text).width;
+  canvas.width = Math.ceil(textWidth) + 8;
+  canvas.height = Math.ceil(fontSize * 1.35);
+
+  ctx.font = fontStr;
+  ctx.fillStyle = color;
+  ctx.textBaseline = 'middle';
+  ctx.textAlign = 'left';
+  ctx.fillText(text, 4, canvas.height / 2);
+
+  return {
+    dataUrl: canvas.toDataURL('image/png'),
+    width: canvas.width,
+    height: canvas.height,
+    fontSize: fontSize
+  };
+}
+
 function drawFooter(doc, p, total, pageW, pageH){
   const y = pageH - 18;
+
   doc.setDrawColor(198, 40, 40);
   doc.setLineWidth(0.8);
   doc.line(18, y - 8, pageW - 18, y - 8);
@@ -779,12 +1186,30 @@ function drawFooter(doc, p, total, pageW, pageH){
   doc.setFontSize(7);
   doc.text(`${COMPANY_EN}   |   ${nowStamp()}   |   Page ${p} of ${total}`,
            pageW / 2, y, { align: 'center' });
+
+  /* ★ Developer signature (Arabic via canvas image), shrunk 30% (target ~4.2pt) */
+  try {
+    const sig = makeSignatureImage(`${DEV_ROLE_AR}  |  ${DEV_NAME}  |  ${DEV_PHONE}`, 24, '#a0a0a0');
+    const targetFontPt = 4.2;
+    const scale = targetFontPt / sig.fontSize;
+    const pdfW = sig.width * scale;
+    const pdfH = sig.height * scale;
+    doc.addImage(sig.dataUrl, 'PNG', 18, y - pdfH / 2, pdfW, pdfH);
+  } catch(e){
+    /* Fallback: English small text */
+    doc.setFontSize(4.2);
+    doc.setTextColor(160, 160, 160);
+    doc.text(`Developer: ${DEV_NAME} | ${DEV_PHONE}`, 18, y, { align: 'left' });
+  }
 }
 
 async function exportPDF(){
   if (!state.report){ alert('يرجى رفع ملف البيانات أولاً.'); return; }
   const R  = state.report;
   const T  = state.opts.transpose;
+
+  if (!R.rows.length){ alert('لا توجد أصناف مختارة للتصدير.'); return; }
+
   const btn = document.getElementById('btnPdf');
   const oldLabel = btn.innerHTML;
   btn.disabled = true;
@@ -814,6 +1239,7 @@ async function exportPDF(){
       else if (n <= 55) baseFont = 4.0;
       else baseFont = 3.5;
       const headFont = Math.max(3, baseFont - 0.8);
+      const numFont  = baseFont * 1.25;
 
       const head = [['#', 'Item', ...R.sites, 'Total']];
       const body = R.rows.map((r, i) => [
@@ -849,11 +1275,15 @@ async function exportPDF(){
         alternateRowStyles: { fillColor: [250, 251, 253] },
         columnStyles: colStyles,
         didParseCell: function(data){
-          if (data.section === 'body' && data.column.index === n + 2){
-            data.cell.styles.textColor = [140, 25, 25];
+          if (data.section === 'body' && data.column.index >= 2){
+            data.cell.styles.fontSize = numFont;
+            if (data.column.index === n + 2){
+              data.cell.styles.textColor = [140, 25, 25];
+            }
           }
         }
       });
+
     } else {
       const itemCount = R.rows.length;
       const idxW  = 12;
@@ -867,6 +1297,7 @@ async function exportPDF(){
       else if (itemCount <= 45) baseFont = 3.8;
       else baseFont = 3.2;
       const headFont = Math.max(2.8, baseFont - 0.8);
+      const numFont  = baseFont * 1.25;
 
       const head = [['#', 'Site', ...R.rows.map(r => r.name)]];
       const body = R.sites.map((s, si) => [
@@ -905,7 +1336,12 @@ async function exportPDF(){
           lineWidth: 0.4, lineColor: [198, 40, 40]
         },
         alternateRowStyles: { fillColor: [250, 251, 253] },
-        columnStyles: colStyles
+        columnStyles: colStyles,
+        didParseCell: function(data){
+          if ((data.section === 'body' || data.section === 'foot') && data.column.index >= 2){
+            data.cell.styles.fontSize = numFont;
+          }
+        }
       });
     }
 
@@ -927,7 +1363,7 @@ async function exportPDF(){
 }
 
 /* =========================================================================
-   9) EVENTS
+   11) EVENTS
    ========================================================================= */
 (function init(){
   document.getElementById('btnUpload').addEventListener('click', () => {
